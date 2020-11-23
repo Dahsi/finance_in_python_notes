@@ -17,7 +17,7 @@ import numpy as np
 
 
 def simpmarket(
-        win_rate, initial_capital=1000, play_cnt=1000, stock_num=9, position=0.01, commision=0.01, lever=False
+        win_rate, initial_capital=1000, play_cnt=1000, stock_num=9, position=0.01, commision=0.0002, lever=False
 ):
     """
     背景：
@@ -64,7 +64,7 @@ def simpmarket(
 
     return my_money
 
-def scene_1():
+def binomial_case():
     """
     假設盈利機率為 50%，請 50 人参與 1000 局交易
     :return:
@@ -80,12 +80,39 @@ def scene_1():
 
     return True
 
+def positmanage(win_rate, initial_capital, play_cnt, stock_num, commission):
+    my_money = np.zeros(play_cnt)
+    my_money[0] = initial_capital
+    binomial = np.random.binomial(stock_num, win_rate, play_cnt)
+    for i in range(1, play_cnt):
+        once_chip = my_money[i-1] * (win_rate * 1 - (1-win_rate))/1  # 凱利公式下註
+        if binomial[i] > stock_num//2:
+            my_money[i] = my_money[i-1] + once_chip
+        else:
+            my_money[i] = my_money[i - 1] - once_chip
+        my_money[i] -= commission * once_chip
+        if my_money[i] < 0:
+            break
+    return my_money
 
 
+def binomial_with_kelly_formula():
+    trader = 50
+    play_cnt = 30
+    initial_capital = 1000
+    win_rate = np.random.uniform(0.25, 1)
+    commision = 0.0002
+    stock_num = 9
+    trader_dict = {
+        i: positmanage(win_rate, initial_capital, play_cnt, stock_num, commision)
+        for i in np.arange(0, trader)}
+    _ = [plt.plot(np.arange(play_cnt), trader_dict[i]) for i in trader_dict]  # 繪製取線圖
+    _ = plt.hist([trader_dict[i][-1] for i in trader_dict], bins=30)  # 繪製直方圖
 
+    return True
 
 
 # --------------------------------------------------------------------------------
 if __name__ == '__main__':
-    scene_1()
-    pass
+    binomial_case()
+    binomial_with_kelly_formula()
