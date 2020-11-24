@@ -4,7 +4,7 @@
 @file: binomial_dist.py 
 @create time: 2020/11/22
 @Reference:
-- <<Python 股票量話交易從入門到實踐>>
+- <<Python 股票量化交易從入門到實踐>>
 - numpy.random.binomial:
 https://numpy.org/doc/stable/reference/random/generated/numpy.random.Generator.binomial.html#numpy.random.Generator.binomial
 """
