@@ -4,6 +4,8 @@
 @file: binomial_dist.py 
 @create time: 2020/11/22
 @Reference:
+完整 medium 文章:
+https://medium.com/finance-in-python-notes/binomial-distribution-%E5%9C%A8%E9%87%8F%E5%8C%96%E4%BA%A4%E6%98%93%E7%9A%84%E4%BD%9C%E7%94%A8-fd9c0fdd0bc6
 - <<Python 股票量化交易從入門到實踐>>
 - numpy.random.binomial:
 https://numpy.org/doc/stable/reference/random/generated/numpy.random.Generator.binomial.html#numpy.random.Generator.binomial
@@ -16,26 +18,16 @@ import numpy as np
 
 def position_manage(win_rate, odds, initial_capital, play_cnt, stock_num, commission):
     """
-        背景：
-        假設一個簡易的市場，具有漲跌隨機波動特徵的短線交易市場，會不停交易，而且不需手續費
-        Argument:
-            trader 重複次數
-            play_cnt 股票組合持有天數
-            initial_capital 初期投入資金
-            win_rate 上漲勝率
-            commision 手續費
-            stock_num 股票種類
-            odds 賠率
-
-        np.random.binomial
-            parameters:
-                n : int or array_like of ints. Parameter of the distribution, >= 0. Floats are also accepted,
-                    but they will be truncated to integers.
-                p : float or array_like of floats.Parameter of the distribution, >= 0 and <=1.
-                size : int or tuple of ints, optional
-            returns:
-                out : ndarray or scalar.Drawn samples from the parameterized binomial distribution,
-                      where each sample is equal to the number of successes over the n trials.
+    Argument:
+        trader 重複次數
+        play_cnt 股票組合持有天數
+        initial_capital 初期投入資金
+        win_rate 上漲勝率
+        commision 手續費
+        stock_num 股票種類
+        odds 賠率
+    returns:
+        list: my_money 每日總資金
     """
     my_money = np.zeros(play_cnt)
     my_money[0] = initial_capital
@@ -57,7 +49,7 @@ def binomial_with_kelly_formula():
     trader = 10  # 重複次數
     play_cnt = 30  # 股票組合持有天數
     initial_capital = 10000  # 初期投入資金
-    win_rate = 0.51 # np.random.uniform(0.25, 1)  # 上漲勝率
+    win_rate = 0.55 # np.random.uniform(0.25, 1)  # 上漲勝率
     commision = 0.0002  # 手續費
     stock_num = 5  # 股票種類
     odds = 1  # 賠率
